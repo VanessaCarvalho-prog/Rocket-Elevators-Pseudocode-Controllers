@@ -1,0 +1,98 @@
+DEFINE Door USING _Id
+  SET id TO _Id
+  SET status TO 'closed'
+ENDDEFINE
+ SEQUENCE Open USING _open
+  Open the door
+ENDSEQUENCE
+
+SEQUENCE Closed UISNG _CLOSE
+  Close the door
+ENDSEQUENCE
+
+
+
+DEFINE Elevator USING _ID AND amountOfFloors
+  SET id TO _Id
+  SET status TO "idle"
+  SET direction TO null
+  SET currentFloor TO 1
+  SET door TO NEW Door WITH _Id
+  SET amountOfFloors TO amountOfFloors
+  SET floorRequestButtonList TO EMPTY ARRAY
+  SET floorRequestList TO EMPTY ARRAY   
+ENDDEFINE
+
+
+SEQUENCE MoveElevator USING _destination
+SET status TO busy 
+use while to find the distance between currentFloor AND _destination
+Go TO requestFloor
+ENDSEQUENCE
+
+SEQUENCE requestFloor USING _requestedFloor
+Close the door
+SET moveElevator  to  _requestedFloor,
+Open door close the door until the user enters 
+SET status TO 'IDLE'
+---------------- 
+ENDSEQUENCE
+
+DEFINE floorRequestButton USING _ID AND _Floor
+    SET id TO _ID
+    SET status TO 'OFF'
+    SET floor TO _Floor
+ENDDEFINE
+
+DEFINE CallButton USING _ID AND _Floor AND _direction
+    SET id TO _ID
+    SET status TO 'OFF'
+    SET floor TO _Floor
+    SET direction TO _direction 
+
+ENDDEFINE
+
+DEFINE Column USING -ID, amountFloors and amountOfElevators
+SET ID TO _Id
+SET status TO 'online'
+SET elevatorList TO EMPTY ARRAY
+SET CallButtonList TO EMPTY ARRAY
+SET amountFloors TO amountFloors
+SET amountOfElevators TO amountOfElevators
+ENDDEFINE
+
+SEQUENCE  elevatorList USING amountOfElevators
+Create elevatorList to amountOfElevators
+
+ENDSEQUENCE
+
+SEQUENCE  CallButtonList USING amountOfFloors
+Create CallButtonList to amountOfFloors
+
+ENDSEQUENCE
+
+SEQUENCE findElevator USING _requestedFloor and direction
+Create ARRAY TO elevatorsIdle
+Create ARRAY TO elevatorsBusySameDirection
+Create ARRAY TO elevatorBusyOtherDirection
+Separate the elevators in the three variables according to elevatorlist
+Look in the list elevatorsBusySameDirection for the closest elevator
+Look in the list elevatorsIdle for the closest elevator
+
+
+SEQUENCE requestElevator USING _requestedFloor and direction
+FIND the best elevator using findElevator
+CALL the elevator using moveElevator
+Open door
+
+ENDSEQUENCE
+
+
+
+
+
+
+
+
+
+
